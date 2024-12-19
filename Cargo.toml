@@ -1,0 +1,23 @@
+[package]
+name = "xcpp"
+version = "0.1.0"
+edition = "2021"
+authors = ["Xanadu13 <xanadu13@qq.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+structopt = "0.3.26"
+anyhow = "1.0"
+log = "0.4"
+env_logger = "0.11.5"
+confy = "0.6.1"
+serde = "1.0"
+serde_derive = "1.0"
+lazy_static = "1.5.0"
+text_placeholder = "0.5.1"
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "2.0"
+
