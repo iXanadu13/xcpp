@@ -138,6 +138,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
             let path = PathBuf::from_str(path.as_str())
                 .with_context(|| format!("Invalid file path `{}`", path))?;
+
+            // 用户指定的mingw64路径不存在
+            if !path.exists() {
+                error!("{} doesn't exist, setup of mingw64 is required.\n", path.display());
+            }
             
             let name: &str = name.clone().leak();
             let work_path = Path::new(name);
