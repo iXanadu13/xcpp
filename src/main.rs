@@ -3,7 +3,7 @@ use structopt::StructOpt;
 use log::{error, info, warn};
 use text_placeholder::Template;
 
-use std::{collections::HashMap, fs::File, io::Write, path::{Path, PathBuf}, process::Command, str::FromStr};
+use std::{collections::HashMap, fs::File, io::Write, path::{Path, PathBuf}, process::{exit, Command}, str::FromStr};
 
 use serde_derive::{Serialize, Deserialize};
 
@@ -141,6 +141,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             
             let name: &str = name.clone().leak();
             let work_path = Path::new(name);
+            // 要创建的工作路径已经存在，则终止
+            if work_path.exists() {
+                error!("Destination `{}` already exists", work_path.display());
+                exit(-1);
+            }
             // 创建项目工作目录
             mkdir(work_path);
             std::env::set_current_dir(work_path)
