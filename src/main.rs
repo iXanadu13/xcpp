@@ -141,7 +141,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             // 用户指定的mingw64路径不存在
             if !path.exists() {
-                error!("{} doesn't exist, setup of mingw64 is required.\n", path.display());
+                error!("{} doesn't exist, setup of mingw64 is required first.\nYou can download it at https://github.com/niXman/mingw-builds-binaries/releases",
+                    path.display()
+                );
+                exit(-1);
             }
             
             let name: &str = name.clone().leak();
