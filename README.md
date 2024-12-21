@@ -61,9 +61,7 @@ RUST_LOG=info ./xcpp.exe new test1 --std=c++17 --path E:/Environment/mingw64_14_
 
 Make sure to replace `./xcpp.exe` and `E:/Environment/mingw64_14_2_0/bin` with the correct paths.
 
-Usage Example (with `mingw64`, `make`, and `xcpp` PATH already configured):
-
-![](example.gif)
+[Usage Example](example.gif) (with `mingw64`, `make`, and `xcpp` PATH already configured)
 
 ## Usage
 
