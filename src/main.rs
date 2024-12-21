@@ -19,6 +19,7 @@ const fn cpp_standards() -> [&'static str; 8] {
 }
 
 #[derive(StructOpt)]
+#[structopt(author = "Xanadu13")]
 struct Cli {
     #[structopt(subcommand)]
     cmd: Cmd,
