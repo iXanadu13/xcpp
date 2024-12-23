@@ -318,7 +318,7 @@ r#"{
         {
             "type": "cppbuild",
             "label": "make",
-            "command": "make",
+            "command": "{{make}}",
             "args": [],
             "options": {
                 "cwd": "${fileDirname}"
@@ -327,7 +327,7 @@ r#"{
                 "$gcc"
             ],
             "group": "build",
-            "detail": "wow, cmake"
+            "detail": "wow, make"
         },
         {
             "type": "cppbuild",

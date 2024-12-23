@@ -180,6 +180,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             
             let gpp_path = join_path(&path, "g++.exe")?.replace("\\", "/");
             let gdb_path = join_path(&path, "gdb.exe")?.replace("\\", "/");
+            let make_path = join_path(&path, "mingw32-make.exe")?.replace("\\", "/");
             
             let mut table = HashMap::new();
             
@@ -191,6 +192,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             info!("g++ path: `{gpp_path}`");
             table.insert("gdb", gdb_path.as_str());
             info!("gdb path: `{gdb_path}`");
+            table.insert("make", make_path.as_str());
+            info!("make path: `{make_path}`");
 
             //exit(-1);
             mkdir(Path::new("target"));
