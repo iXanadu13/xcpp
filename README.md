@@ -8,7 +8,7 @@ The generated multi-files C++ project uses g++ for compilation, and gdb for debu
 
 ## Preparation
 
-### Step 1: Configure mingw64
+### Configure mingw64
 
 Download from: [https://github.com/niXman/mingw-builds-binaries/releases](https://github.com/niXman/mingw-builds-binaries/releases)
 
@@ -17,14 +17,6 @@ I chose `x86_64-14.2.0-release-posix-seh-ucrt-rt_v12-rev0`. You can Google the d
 After downloading, extract the files and place them in a path without Chinese characters or spaces. My mingw64 path is `E:/Environment/mingw64_14_2_0/bin`.
 
 Lastly, you may choose to add the mingw64 path (`E:/Environment/mingw64_14_2_0/bin`) to the system's Path environment variable.
-
-### Step 2: Configure make
-
-Mingw64 comes with make, located in `bin/mingw32-make.exe`.
-
-For convenience, I copied it to a separate folder (`E:/Environment/mingw32-make`), renamed it to `make.exe`, and added `E:/Environment/mingw32-make` to the system's Path. This allows you to run `make` in the command line.
-
-Note: The generated C++ project has a configured task for `make`. If you skip this step, you can use other tasks. Make will check which files have not been modified and skip them during the next compilation, improving build speed.
 
 ## Setup
 
@@ -61,7 +53,7 @@ RUST_LOG=info ./xcpp.exe new test1 --std=c++17 --path E:/Environment/mingw64_14_
 
 Make sure to replace `./xcpp.exe` and `E:/Environment/mingw64_14_2_0/bin` with the correct paths.
 
-[Usage Example](example.gif) (with `mingw64`, `make`, and `xcpp` PATH already configured)
+[Usage Example](example.gif) (with `mingw64` and `xcpp` PATH already configured)
 
 ## Usage
 
