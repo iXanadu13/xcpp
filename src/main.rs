@@ -86,6 +86,37 @@ fn join_path<'a>(path: &'a PathBuf, sub: &'a str) -> Result<String, Box<dyn std:
         .ok_or(format!("Invalid file path `{}`", path.display()).into())
 }
 
+/// 根据传入的config、std、path参数值，解析并返回(std, path)
+fn validate_args(config: MyConfig, std: String, path: String) -> (String, String) {
+    let std = match (std, config.std) {
+        (s1, _) if !matches!(s1.as_str(), "cfg") => s1, // 如果没有指定用配置文件内容，说明是c++__
+        (_, s2) => {
+            warn!("Missing argumet: `--std`, using `--std={s2}` in `config.toml`");
+            if cpp_standards().contains(&s2.as_str()) {
+                if matches!(s2.as_str(), "cfg") {
+                    panic!("`std=cfg` cannot be used in `config.toml`");
+                }
+                s2
+            } else {
+                Cli::clap().print_help().unwrap();
+                panic!("Invalid argument in config.toml: `std={s2}`");
+            }
+        }
+    };
+    let path = match (path, config.mingw64_path) {
+        (s1, _) if !s1.is_empty() => s1, // 如果s1非空，说明是经过验证的命令参数
+        (_, s2) => {
+            if s2.is_empty() {
+                Cli::clap().print_help().unwrap();
+                panic!("Missing argumet: `--path`, try to pass it or specify it in `config.toml`");
+            }
+            warn!("Missing argumet: `--path`, using `--path={s2}` in `config.toml`");
+            s2
+        }
+    };
+    (std, path)
+}
+
 // RUST_LOG=info ./xcpp.exe new hello_cpp --path E:/Environment/mingw64_14_2_0/bin --std=c++17
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
@@ -112,32 +143,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Cmd::New { name, std, path } => {
             let config: MyConfig = confy::load("xcpp", "config")?;
-            let std: String = match (std, config.std) {
-                (s1, _) if !matches!(s1.as_str(), "cfg") => s1, // 如果没有指定用配置文件内容，说明是c++??
-                (_, s2) => {
-                    warn!("Missing argumet: `--std`, using `--std={s2}` in `config.toml`");
-                    if cpp_standards().contains(&s2.as_str()) {
-                        if matches!(s2.as_str(), "cfg") {
-                            panic!("`std=cfg` cannot be used in `config.toml`");
-                        }
-                        s2
-                    } else {
-                        Cli::clap().print_help().unwrap();
-                        panic!("Invalid argument in config.toml: `std={s2}`");
-                    }
-                }
-            };
-            let path = match (path, config.mingw64_path) {
-                (s1, _) if !s1.is_empty() => s1, // 如果s1非空，说明是经过验证的命令参数
-                (_, s2) => {
-                    if s2.is_empty() {
-                        Cli::clap().print_help().unwrap();
-                        panic!("Missing argumet: `--path`, try to pass it or specify it in `config.toml`");
-                    }
-                    warn!("Missing argumet: `--path`, using `--path={s2}` in `config.toml`");
-                    s2
-                }
-            };
+            let (std, path) = validate_args(config, std, path);
+
             let path = PathBuf::from_str(path.as_str())
                 .with_context(|| format!("Invalid file path `{}`", path))?;
 
