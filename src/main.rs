@@ -243,3 +243,36 @@ int main(){
     
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn validate_args_test1() {
+        let config = MyConfig {
+            std: "c++17".to_owned(),
+            mingw64_path: String::new(),
+        };
+        let std = "c++20".to_owned();
+        let path = "D:/wow/mingw64/bin".to_owned();
+
+        let (std, path) = validate_args(config, std, path);
+        // cli input overwrites config
+        assert_eq!(std, "c++20".to_owned()); 
+        assert_eq!(path, "D:/wow/mingw64/bin".to_owned());
+    }
+
+    #[test]
+    fn validate_args_test2() {
+        let config = MyConfig {
+            std: "c++14".to_owned(),
+            mingw64_path: "D:/wow/mingw64/bin".to_owned(),
+        };
+
+        let (std, path) = validate_args(config, String::from("cfg"), String::new());
+        // uses config
+        assert_eq!(std, "c++14".to_owned());
+        assert_eq!(path, "D:/wow/mingw64/bin".to_owned());
+    }
+}
